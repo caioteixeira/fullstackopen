@@ -1,0 +1,9 @@
+note over browser:
+Page is already loaded, user writes a new note and click submit
+end note
+
+browser->server: HTTP POST https://fullstack-exampleapp.herokuapp.com/new_note_spa
+note over browser:
+spa.js adds notes to internal data structure and redraw notes list
+end note
+server-->browser: 201, {"message":"note created"}
