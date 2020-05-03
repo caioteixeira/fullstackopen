@@ -9,13 +9,21 @@ const Header = (props) => {
   )
 }
 
+const Part = (props) => {
+  return (
+    <p>
+      {props.part.partName} {props.part.exercises}
+    </p>
+  )
+}
+
 const Content = (props) =>
 {
   let parts = []
   props.content.forEach(element =>{
-    parts.push(<p>
-      {element.partName} {element.exercises}
-    </p>)
+    parts.push(
+      <Part part={element}/>
+    )
   })
 
   return parts
@@ -50,13 +58,6 @@ const App = () => {
       exercises: 14
     }
   ]
-
-  const part1 = 'Fundamentals of React'
-  const exercises1 = 10
-  const part2 = 'Using props to pass data'
-  const exercises2 = 7
-  const part3 = 'State of a component'
-  const exercises3 = 14
 
   return (
     <div>
