@@ -7,12 +7,18 @@ const Button = (props) => (
   </button>
 )
 
-const Value = (props) => (
+const Statistic = (props) => (
 <>{props.text} {props.value} <br/></>
 )
 
 const Statistics = (props) => {
   const total = props.good + props.neutral + props.bad;
+
+  if(total === 0) {
+    return ( 
+    <p>No feedback given</p>)
+  }
+
   const average = (props.good + props.bad * -1) / total;
   const positive = props.good / total * 100
 
@@ -20,12 +26,12 @@ const Statistics = (props) => {
     <>
     <Header text="statistics"/>
   
-    <Value text="good" value={props.good}/>
-    <Value text="neutral" value={props.neutral}/>
-    <Value text="bad" value={props.bad}/>
-    <Value text="all" value={total}/>
-    <Value text="average" value={average}/>
-    <Value text="positive" value={positive + '%'}/>
+    <Statistic text="good" value={props.good}/>
+    <Statistic text="neutral" value={props.neutral}/>
+    <Statistic text="bad" value={props.bad}/>
+    <Statistic text="all" value={total}/>
+    <Statistic text="average" value={average}/>
+    <Statistic text="positive" value={positive + '%'}/>
     </>
   )
 }
