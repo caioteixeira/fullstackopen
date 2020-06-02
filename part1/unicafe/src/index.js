@@ -8,7 +8,10 @@ const Button = (props) => (
 )
 
 const Statistic = (props) => (
-<>{props.text} {props.value} <br/></>
+  <tr>
+    <td>{props.text}</td>
+    <td>{props.value}</td>
+  </tr>
 )
 
 const Statistics = (props) => {
@@ -26,12 +29,16 @@ const Statistics = (props) => {
     <>
     <Header text="statistics"/>
   
-    <Statistic text="good" value={props.good}/>
-    <Statistic text="neutral" value={props.neutral}/>
-    <Statistic text="bad" value={props.bad}/>
-    <Statistic text="all" value={total}/>
-    <Statistic text="average" value={average}/>
-    <Statistic text="positive" value={positive + '%'}/>
+    <table>
+      <tbody>
+        <Statistic text="good" value={props.good}/>
+        <Statistic text="neutral" value={props.neutral}/>
+        <Statistic text="bad" value={props.bad}/>
+        <Statistic text="all" value={total}/>
+        <Statistic text="average" value={average}/>
+        <Statistic text="positive" value={positive + '%'}/>
+      </tbody>
+    </table>
     </>
   )
 }
