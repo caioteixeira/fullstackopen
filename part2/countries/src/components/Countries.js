@@ -1,8 +1,15 @@
-import React from "react";
+import React, {useState} from "react";
+import Button from "./Button";
 
 const Country = ({country}) => {
+    const [ showDetails, setDetails ] = useState(false)
+
     return (
-        <div>{country.name}</div>
+        <div>
+            {country.name}
+            <Button handleClick={() => setDetails(!showDetails)} text={showDetails ? "hide" : "show"}/>
+            { showDetails ? <CountryInfo country={country}/> : ""}
+        </div>
     )
 }
 
