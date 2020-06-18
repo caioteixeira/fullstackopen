@@ -1,4 +1,8 @@
 import React, {useState} from "react";
+import axios from "axios"
+
+const baseUrl = 'http://localhost:3001/persons'
+
 
 const PersonForm = ({persons, addNewPerson}) => {
 
@@ -16,10 +20,13 @@ const PersonForm = ({persons, addNewPerson}) => {
             name: newName,
             number: newNumber
         }
-        addNewPerson(nameObject)
 
-        setNewName('')
-        setNewNumber('')
+        const request = axios.post(baseUrl, nameObject)
+        request.then(response => {
+            addNewPerson(response.data)
+            setNewName('')
+            setNewNumber('')
+        })
     }
 
     const handleNameChange = (event) => {
