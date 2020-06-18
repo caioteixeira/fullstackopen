@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import axios from "axios"
 
-const baseUrl = 'http://localhost:3001/persons'
+import personService from "../services/persons";
 
 
 const PersonForm = ({persons, addNewPerson}) => {
@@ -21,9 +21,8 @@ const PersonForm = ({persons, addNewPerson}) => {
             number: newNumber
         }
 
-        const request = axios.post(baseUrl, nameObject)
-        request.then(response => {
-            addNewPerson(response.data)
+        personService.create(nameObject).then(person => {
+            addNewPerson(person)
             setNewName('')
             setNewNumber('')
         })
