@@ -25,7 +25,22 @@ const App = () => {
     }
 
     const addNewPerson = (person) => {
-        setPersons(persons.concat(person))
+        const existentPerson = persons.find(p => p.name === person.name)
+        if(existentPerson)
+        {
+            if(window.confirm(`${person.name} is already added to the phonebook, replace the old number with a new one?`))
+            {
+                personService.update(existentPerson.id, person).then(new_person => {
+                    setPersons(persons.map(p => p.id !== new_person.id ? p : new_person))
+                })
+            }
+        }
+        else
+        {
+            personService.create(person).then(person => {
+                setPersons(persons.concat(person))
+            })
+        }
     }
 
     const removePerson = (person) => {

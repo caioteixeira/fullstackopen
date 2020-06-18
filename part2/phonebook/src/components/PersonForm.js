@@ -9,21 +9,15 @@ const PersonForm = ({persons, addNewPerson}) => {
 
     const addName = (event) => {
         event.preventDefault()
-        if(persons.find((name) => name.name === newName)){
-            alert(`${newName} is already added to phonebook`)
-            return
-        }
 
-        const nameObject = {
+        const person = {
             name: newName,
             number: newNumber
         }
 
-        personService.create(nameObject).then(person => {
-            addNewPerson(person)
-            setNewName('')
-            setNewNumber('')
-        })
+        addNewPerson(person)
+        setNewName('')
+        setNewNumber('')
     }
 
     const handleNameChange = (event) => {
