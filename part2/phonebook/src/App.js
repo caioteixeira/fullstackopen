@@ -4,12 +4,14 @@ import PersonForm from "./components/PersonForm"
 import Filter from "./components/Filter";
 import personService from "./services/persons";
 import SuccessNotification from "./components/SuccessNotification";
+import ErrorNotification from "./components/ErrorNotification";
 
 const App = () => {
     const [ persons, setPersons ] = useState([])
     const [ nameFilter, setNameFilter ] = useState('')
 
     const [ successNotification, setSuccessNotification] = useState('')
+    const [ errorNotification, setErrorNotification] = useState('')
 
     const namesToShow = persons.filter(person => person.name.toLowerCase().includes(nameFilter.toLowerCase()))
 
@@ -27,6 +29,20 @@ const App = () => {
         setNameFilter(event.target.value)
     }
 
+    const showSuccessMessage = (message) => {
+        setSuccessNotification(message)
+        setTimeout(() => {
+            setSuccessNotification('')
+        }, 5000)
+    }
+
+    const showErrorMessage = (message) => {
+        setErrorNotification(message)
+        setTimeout(() => {
+            setErrorNotification('')
+        }, 5000)
+    }
+
     const addNewPerson = (person) => {
         const existentPerson = persons.find(p => p.name === person.name)
         if(existentPerson)
@@ -35,12 +51,7 @@ const App = () => {
             {
                 personService.update(existentPerson.id, person).then(new_person => {
                     setPersons(persons.map(p => p.id !== new_person.id ? p : new_person))
-                    setSuccessNotification(
-                        `Updated '${person.name}'`
-                    )
-                    setTimeout(() => {
-                        setSuccessNotification('')
-                    }, 5000)
+                    showSuccessMessage(`Updated '${person.name}'`)
                 })
             }
         }
@@ -48,12 +59,7 @@ const App = () => {
         {
             personService.create(person).then(person => {
                 setPersons(persons.concat(person))
-                setSuccessNotification(
-                    `Added '${person.name}'`
-                )
-                setTimeout(() => {
-                    setSuccessNotification('')
-                }, 5000)
+                showSuccessMessage(`Added '${person.name}'`)
             })
         }
     }
@@ -64,6 +70,10 @@ const App = () => {
             personService.remove(person.id)
                 .then(() => {
                     setPersons(persons.filter(p => p.id !== person.id))
+                    showSuccessMessage(`Removed ${person.name}`)
+                })
+                .catch(() => {
+                    showErrorMessage(`Information of ${person.name} has already been removed from server`)
                 })
         }
     }
@@ -72,6 +82,7 @@ const App = () => {
         <div>
             <h2>Phonebook</h2>
             <SuccessNotification message={successNotification}/>
+            <ErrorNotification message={errorNotification}/>
             <Filter nameFilter={nameFilter} onChange={handleFilterChange}/>
             <h3>add a new</h3>
             <PersonForm persons={persons} addNewPerson={addNewPerson}/>
