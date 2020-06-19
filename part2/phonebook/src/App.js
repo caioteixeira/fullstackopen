@@ -3,10 +3,13 @@ import Persons from "./components/Persons";
 import PersonForm from "./components/PersonForm"
 import Filter from "./components/Filter";
 import personService from "./services/persons";
+import SuccessNotification from "./components/SuccessNotification";
 
 const App = () => {
     const [ persons, setPersons ] = useState([])
     const [ nameFilter, setNameFilter ] = useState('')
+
+    const [ successNotification, setSuccessNotification] = useState('')
 
     const namesToShow = persons.filter(person => person.name.toLowerCase().includes(nameFilter.toLowerCase()))
 
@@ -32,6 +35,12 @@ const App = () => {
             {
                 personService.update(existentPerson.id, person).then(new_person => {
                     setPersons(persons.map(p => p.id !== new_person.id ? p : new_person))
+                    setSuccessNotification(
+                        `Updated '${person.name}'`
+                    )
+                    setTimeout(() => {
+                        setSuccessNotification('')
+                    }, 5000)
                 })
             }
         }
@@ -39,6 +48,12 @@ const App = () => {
         {
             personService.create(person).then(person => {
                 setPersons(persons.concat(person))
+                setSuccessNotification(
+                    `Added '${person.name}'`
+                )
+                setTimeout(() => {
+                    setSuccessNotification('')
+                }, 5000)
             })
         }
     }
@@ -56,6 +71,7 @@ const App = () => {
     return (
         <div>
             <h2>Phonebook</h2>
+            <SuccessNotification message={successNotification}/>
             <Filter nameFilter={nameFilter} onChange={handleFilterChange}/>
             <h3>add a new</h3>
             <PersonForm persons={persons} addNewPerson={addNewPerson}/>
