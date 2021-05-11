@@ -58,6 +58,28 @@ test('a valid blog can be added', async () => {
   expect(titles).toContain('A new note')
 })
 
+test('a valid blog can be added with no likes by default', async () => {
+  const newBlog = 
+    {
+      'title':'A new note',
+      'author':'Mark Zuckerberg',
+      'url':'https://www.facebook.com.br'
+    }
+  
+  await api
+    .post('/api/blogs/')
+    .send(newBlog)
+    .expect(201)
+    .expect('Content-Type', /application\/json/)
+
+  const blogsAtEnd = await helper.blogsInDb()
+
+  expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length + 1)
+
+  const likes = blogsAtEnd.map(blog => blog.likes)
+  expect(likes).toContain(0)
+})
+
 test('blog without content is not added', async () => {
   const newBlog = {}
 

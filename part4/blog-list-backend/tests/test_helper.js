@@ -11,7 +11,7 @@ const initialBlogs = [
     'title':'Batata',
     'author':'Caio',
     'url':'https://www.pudim.com.br',
-    'likes':0
+    'likes':15
   }
 ]
 
