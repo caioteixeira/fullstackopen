@@ -7,10 +7,12 @@ const helper = require('./test_helper')
 
 beforeEach(async () => {
   await Blog.deleteMany({})
-  let blogObject = new Blog(helper.initialBlogs[0])
-  await blogObject.save()
-  blogObject = new Blog(helper.initialBlogs[1])
-  await blogObject.save()
+
+  const blogObjects = helper.initialBlogs
+    .map(blog => new Blog(blog))
+
+  const promiseArray = blogObjects.map(blog => blog.save())
+  await Promise.all(promiseArray)
 })
 
 test('blogs are return as json', async () => {
