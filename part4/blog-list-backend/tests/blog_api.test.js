@@ -117,6 +117,26 @@ describe('update existing blogs', () => {
 
     expect(titles).not.toContain(blogToDelete.title)
   })
+
+  test('update a blog', async () => {
+    const blogsAtStart = await helper.blogsInDb()
+    const blogToUpdate = blogsAtStart[0]
+    blogToUpdate.likes = 242
+
+    await api
+      .put(`/api/blogs/${blogToUpdate.id}`)
+      .send(blogToUpdate)
+      .expect(200)
+
+    const blogsAtEnd = await helper.blogsInDb()
+
+    expect(blogsAtEnd).toHaveLength(
+      helper.initialBlogs.length
+    )
+
+    const likes = blogsAtEnd.map(blog => blog.likes)
+    expect(likes).toContain(blogToUpdate.likes)
+  })
 })
 
 afterAll(() => {
